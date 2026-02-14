@@ -43,6 +43,7 @@ padButtons.id = 'padButtons';
 // sketchpad logic
 
 let currentColor = 'black';
+let currentMode = 'darken';
 
 function createGrid(size) {
 
@@ -54,9 +55,11 @@ function createGrid(size) {
 
         square.classList.add('square');
 
+        // grid size
         square.style.width = `${100 / size}%`;
         square.style.height = `${100 / size}%`;
 
+        // change grid color on hoover
         square.addEventListener('mouseover', () => {
 
             square.addEventListener('mouseover', () => {
@@ -66,6 +69,16 @@ function createGrid(size) {
                     square.style.background = 'white';
                 } else if (currentColor === 'random') {
                     square.style.background = randomColor();
+                }
+
+                //opcity on hover
+
+                if (currentMode === 'darken'){
+                    let darkness = square.dataset.darkness || 0;
+                    darkness = Math.min(Number(darkness) + 0.1, 1);
+                    square.dataset.darkness = darkness;
+                    square.style.background = `rgba(0,0,0,${darkness})`;
+                    return;
                 }
             });
 
