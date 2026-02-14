@@ -1,0 +1,58 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+#padContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dfdede;
+    height: 100vh;
+    flex-direction: column;
+}
+#sketchPad{
+    height: 500px;
+    width: 500px;
+    border: 1px solid tomato;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    margin-bottom: 1.5rem;
+}
+#header{
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+#header h1{
+    margin-bottom: 1.5rem;
+    color: tomato;
+}
+#header button,
+#padButtons button{
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: none;
+    background: rgb(5, 119, 233);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s ease;
+}
+#header button:hover,
+#padButtons button:hover{
+    transform: translateY(-2px);
+    background: rgb(2, 108, 214);
+}
+
+#padButtons{
+    display: flex;
+    gap: 1rem;
+}
+.square{
+    box-sizing: border-box;
+    color: #eee;
+    border: 1px solid #eee;
+}
