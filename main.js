@@ -29,10 +29,10 @@ padButtons.appendChild(resetBtn);
 
 // elements text content
 h1.textContent = 'Etch-a-Sketch';
-createNewBtn.textContent = 'Create New';
+createNewBtn.textContent = 'Create New Grid';
 darkBtn.textContent = 'Dark';
 whiteBtn.textContent = 'White';
-randomBtn.textContent = 'Random';
+randomBtn.textContent = 'Random Color';
 resetBtn.textContent = 'Clear'
 
 // div ids
