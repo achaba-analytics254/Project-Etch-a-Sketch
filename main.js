@@ -60,29 +60,44 @@ function createGrid(size) {
         square.style.height = `${100 / size}%`;
 
         // change grid color on hoover
+
         square.addEventListener('mouseover', () => {
 
-            square.addEventListener('mouseover', () => {
+            let h, s, l;
+
+            // If no color yet, set initial one
+            if (!square.dataset.h) {
+
+                let baseColor;
+
                 if (currentColor === 'black') {
-                    square.style.background = 'black';
+                    baseColor = 'rgb(0,0,0)';
                 } else if (currentColor === 'white') {
-                    square.style.background = 'white';
-                } else if (currentColor === 'random') {
-                    square.style.background = randomColor();
+                    baseColor = 'rgb(255,255,255)';
+                } else {
+                    baseColor = randomColor();
                 }
 
-                //opcity on hover
+                const rgb = baseColor.match(/\d+/g).map(Number);
+                [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
 
-                if (currentMode === 'darken'){
-                    let darkness = square.dataset.darkness || 0;
-                    darkness = Math.min(Number(darkness) + 0.1, 1);
-                    square.dataset.darkness = darkness;
-                    square.style.background = `rgba(0,0,0,${darkness})`;
-                    return;
-                }
-            });
+            } else {
+                h = Number(square.dataset.h);
+                s = Number(square.dataset.s);
+                l = Number(square.dataset.l);
+            }
 
+            // Reduce lightness by 10 each hover
+            l = Math.max(l - 10, 0);
+
+            // Store updated values
+            square.dataset.h = h;
+            square.dataset.s = s;
+            square.dataset.l = l;
+
+            square.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
         });
+
 
         sketchPad.appendChild(square);
     }
@@ -92,9 +107,9 @@ createGrid(16);
 // random color function
 
 function randomColor() {
-    const red = Math.floor(Math.random() * 360);
-    const green = Math.floor(Math.random() * 360);
-    const blue = Math.floor(Math.random() * 360);
+    const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);
     return `rgb(${red}, ${green}, ${blue})`;
 }
 
@@ -124,4 +139,45 @@ whiteBtn.addEventListener('click', () => {
 randomBtn.addEventListener('click', () => {
     currentColor = 'random';
 })
+
+function randomColor() {
+    const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);
+
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+
+// rgb to hsl for random colors opacity
+
+function rgbToHsl(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0;
+    } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+
+        h /= 6;
+    }
+
+    return [
+        Math.round(h * 360),
+        Math.round(s * 100),
+        Math.round(l * 100)
+    ];
+}
 
